@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+               xmlns:s="library://ns.adobe.com/flex/spark" 
+               xmlns:mx="library://ns.adobe.com/flex/halo"
+			   creationComplete="init();">
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+		import flash.display.StageDisplayState;
+		import flash.events.Event;
+		import flash.events.FullScreenEvent;
+		import flash.events.KeyboardEvent;
+		import flash.events.MouseEvent;
+		import mx.collections.ArrayCollection;
+			[Embed('img/unfullscreen.png')] protected const icon_unfullscreen:Class;
+			[Bindable]
+			public var serverdp:ArrayCollection = new ArrayCollection([{name:"P2P",no:0}]);
+			private function init():void {
+				settings.addEventListener(MouseEvent.CLICK,function(e:Event):void {
+					settings_window.visible = true;
+				});
+				fullscreen.addEventListener(MouseEvent.CLICK, function(e:Event):void {
+					if(stage.displayState==StageDisplayState.NORMAL) {
+						stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
+					} else {
+						stage.displayState = StageDisplayState.NORMAL;
+					}
+				});
+				stage.addEventListener(FullScreenEvent.FULL_SCREEN, function(e:FullScreenEvent):void {
+					if (e.fullScreen) {
+						
+					} else {
+						
+					}
+				});
+				this.addEventListener(Event.RESIZE, function(e:Event):void {
+					q.x = 0.382 * stage.width;
+					q.y = 0.382 * stage.height;
+				});
+			}
+		]]>
+	</fx:Script>
+	<s:Button id="fullscreen" icon="@Embed('img/fullscreen.png')" top="0" right="100" />
+	<s:SkinnableContainer left="0" bottom="0" width="100%" height="6.25%">
+		<s:Button id="garage" left="0" top="0" height="100%" icon="@Embed('img/garage.png')" />
+		<s:Button id="newbattle" right="0" top="0" height="100%" icon="@Embed('img/newbattle.png')" />
+	</s:SkinnableContainer>
+	<s:Button id="top_garage" label="Garage^"/>
+	<s:DropDownList id="server" width="5%" height="2.38%" top="0" right="400" dataProvider="{serverdp}" labelField="name" requireSelection="true" prompt="P2P" />
+	<s:Button id="mute" icon="@Embed('img/unmute.png')" top="0" right="300" />
+	<s:Button id="settings" icon="@Embed('img/settings.png')" top="0" right="200" />
+	<s:Button id="exit" icon="@Embed('img/exit.png')" top="0" right="0" />
+	<s:TitleWindow id="settings_window" title="Settings" width="95.23%" height="95.23%" visible="false" close="settings_window.visible=false;" />
+	<s:SkinnableContainer id="q" width="23.6%" height="23.6%">
+		<s:Label id="doquit" text="Quit Battle?" top="0" visible="false" />
+		<s:Label id="dologout" text="Logout?" top="0" visible="false" />
+		<s:Button id="yes" label="Yes" left="0" bottom="0" />
+		<s:Button id="no" label="No" right="0" bottom="0" />
+	</s:SkinnableContainer>
+</s:Application>
