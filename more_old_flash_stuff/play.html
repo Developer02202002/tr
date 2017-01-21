@@ -1,0 +1,48 @@
+<!doctype HTML><html><head>
+<title>Tanki Reloaded</title>
+<script src="js/swfobject.js"></script>
+<script>
+swfobject.registerObject("Container","9.0.0","expressInstall.swf");
+document.ondragstart = function(){return false;};
+</script>
+<style>
+html,body {margin:0;height:100%;overflow:hidden;background-color:#1f1f1f;color:#ffffff;-moz-user-select:-moz-none;-khtml-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none}
+a {color:#007fff}
+a:hover {color:#ffff00}
+a:active {color:#000000}
+#getFlash {position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background-color:#3f3f3f;padding:10px;
+-webkit-box-shadow: 0px 10px 20px 5px rgba(63,63,63,1);
+-moz-box-shadow: 0px 10px 20px 5px rgba(63,63,63,1);
+box-shadow: 0px 10px 20px 5px rgba(63,63,63,1);
+border-radius: 10px 10px 10px 10px;
+-moz-border-radius: 10px 10px 10px 10px;
+-webkit-border-radius: 10px 10px 10px 10px;
+border: 0px solid #000000}
+object {width:100%;height:100%}
+</style>
+</head><body oncontextmenu="return false" unselectable="on">
+<object id="Container" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000">
+<param name="movie" value="TankiReloaded.swf" />
+<param name="bgcolor" value="#303030" />
+<param name="menu" value="false" />
+<param name="allowFullscreen" value="true" />
+<param name="allowScriptAccess" value="always" />
+<param name="wmode" value="direct" />
+<!--[if !IE]>-->
+<object type="application/x-shockwave-flash" data="TankiReloaded.swf">
+<!--<![endif]-->
+<param name="movie" value="TankiReloaded.swf" />
+<param name="bgcolor" value="#303030" />
+<param name="menu" value="false" />
+<param name="allowFullscreenInteractive" value="true" />
+<param name="allowScriptAccess" value="always" />
+<param name="wmode" value="direct" />
+<div id="getFlash">
+<a href="http://get.adobe.com/flashplayer/"><img src="GetFlash.png" /></a><br />
+You must have <a href="http://get.adobe.com/flashplayer/">Adobe Flash Player</a> installed to play Tanki Reloaded
+</div>
+<!--[if !IE]>-->
+</object>
+<!--<![endif]-->
+</object>
+</body></html>
