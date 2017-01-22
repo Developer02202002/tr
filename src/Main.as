@@ -25,12 +25,25 @@
 //								Maybe released under GNU GPL v3?
 //
 package {
+	import alternativa.engine3d.controllers.SimpleObjectController;
 	import alternativa.engine3d.core.Camera3D;
 	import alternativa.engine3d.core.Object3D;
+	import alternativa.engine3d.core.Resource;
 	import alternativa.engine3d.core.View;
+	import alternativa.engine3d.loaders.Parser3DS;
+	import alternativa.engine3d.materials.FillMaterial;
+	import alternativa.engine3d.materials.TextureMaterial;
+	import alternativa.engine3d.objects.Mesh;
+	import alternativa.engine3d.primitives.Box;
+	import alternativa.engine3d.resources.BitmapTextureResource;
+	import flash.display.BitmapData;
+	import flash.display.Loader;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.display.Stage3D;
+	import flash.display.StageAlign;
+	import flash.display.StageQuality;
+	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
@@ -44,23 +57,34 @@ package {
 		private var camera:Camera3D;
 		private var stage3d:Stage3D;
 		private var scene:Object3D;
+		private var controller:SimpleObjectController;
 		public function Main() {
+			stage.align = StageAlign.TOP_LEFT;
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			stage.quality = StageQuality.BEST;
 			camera = new Camera3D(0.1, 1000000);
-			camera.view = new View(800, 600, false, 0xFF00FF, 0, 4);
+			camera.view = new View(800, 600, false, 0x007FFF, 0, 4);
 			//camera.view.hideLogo();
 			addChild(camera.view);
+			addChild(camera.diagram);
 			scene = new Object3D();
 			scene.addChild(camera);
+			addEventListener(Event.RESIZE, function(e:Event):void {
+				camera.view.width = stage.stageWidth;
+				camera.view.height = stage.stageHeight;
+			});
 			stage3d = stage.stage3Ds[0];
 			stage3d.addEventListener(Event.CONTEXT3D_CREATE, init);
 			stage3d.requestContext3D();
 		}
-		public function init():void {
+		public function init(e:Event):void {
 			stage3d.removeEventListener(Event.CONTEXT3D_CREATE, init);
+			this.addEventListener(Event.ENTER_FRAME, render);
 			progressBar = new ProgressBar(0, 0, 320, 40);
 			this.addEventListener(ProgressEvent.PROGRESS, function(e:ProgressEvent):void {
 				progressBar.update(progress / itemsLoading);
-				if (progress / itemsLoading == 1) {
+				if (progress == itemsLoading) {
+					uploadResources();
 					var map:XML = configuration.map.(@name == curMap).children();
 					ExternalInterface.call('alert', map.toString());
 				}
@@ -70,15 +94,58 @@ package {
 			rectangle.graphics.drawRect(0, 0, 100,100);
 			rectangle.graphics.endFill();
 			addChild(rectangle);*/
-			//loadTARA('../../library/CityBuildings.tara');
-			loadMap('');
+			loadMap('Serpuhov');
+			camera.setPosition( -50, -300, 100);
+			controller = new SimpleObjectController(stage, camera, 200);
+			controller.lookAtXYZ(0, 0, 0);
+			var box:Box = new Box(1, 1, 1);
+			box.setMaterialToAllSurfaces(new FillMaterial(0));
+			scene.addChild(box);
+			uploadResources();
+		}
+		public function render(e:Event):void {
+			controller.update();
+			camera.render(stage3d);
+		}
+		public function uploadResources():void {//this function is NOT permanent
+			for each(var res:Resource in scene.getResources(true)) {
+				res.upload(stage3d.context3D);
+			}
 		}
 		private var itemsLoading:int;
 		private var progress:Number;
 		private var progressBar:ProgressBar;
 		private var curMap:String;
-		private var configuration:XML = <configuration/>;
+		private var configuration:XML = <configuration/>;//old libs
 		private var proplib:Dictionary = new Dictionary();//old lib setup
+		private var assetlib:Dictionary = new Dictionary();//new lib setup
+		public function initTexture(libName:String, propGroupName:String, propName:String, texName:String, data:ByteArray):void {
+			itemsLoading++;
+			var loader:Loader = new Loader();
+			loader.contentLoaderInfo.addEventListener(Event.INIT, function(e:Event):void {
+				var bmp:BitmapData = new BitmapData(loader.content.width, loader.content.height);
+				bmp.draw(loader);
+				proplib[libName][propGroupName][propName][1][texName] = new TextureMaterial(new BitmapTextureResource(bmp));
+				progress++;
+				this.dispatchEvent(new ProgressEvent(ProgressEvent.PROGRESS));
+			});
+			loader.loadBytes(data);
+		}
+		public function initProp(libName:String, propGroupName:String, propName:String, fileName:String, data:ByteArray, defTex:Boolean):void {
+			var parser:Parser3DS = new Parser3DS();
+			parser.parse(data);
+			var mesh:Mesh;
+			for each(var obj:Object3D in parser.objects) {
+				if (obj.name == fileName) {
+					mesh = obj as Mesh;
+					break;
+				}
+			}
+			proplib[libName][propGroupName][propName][0] = mesh;
+			if (defTex) {
+				
+			}
+		}
 		public function loadTARA(file:String):void {
 			var loader:URLLoader = new URLLoader();
 			loader.dataFormat = URLLoaderDataFormat.BINARY;
@@ -108,11 +175,21 @@ package {
 					proplib[libName][propGroupName] = new Dictionary();
 					for each(var prop:XML in propgroup.children()) {
 						var propName:String = prop.@name.toString();
-						proplib[libName][propGroupName][propName] = new Array(0, new Dictionary());
-						
+						if (prop.mesh.length()) {
+							proplib[libName][propGroupName][propName] = new Array(0, new Dictionary());
+							var defTex:Boolean = true;
+							if (prop.texture.length()) {
+								defTex = false;
+								for each(var tex:XML in prop.texture) {
+									initTexture(libName, propGroupName, propName, tex.@name.toString(), files[tex['@diffuse-map'].toString()]);
+								}
+							}
+							initProp(libName, propGroupName, propName, prop.mesh.@file.toString().slice(0,-4), files[prop.mesh.@file.toString()], defTex);
+						} else {
+							//object is a sprite
+						}
 					}
 				}
-				//when fully parsed, add 0.5 to progress
 				progress += 0.5;
 				this.dispatchEvent(new ProgressEvent(ProgressEvent.PROGRESS));
 			});
