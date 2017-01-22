@@ -25,8 +25,12 @@
 //								Maybe released under GNU GPL v3?
 //
 package {
+	import alternativa.engine3d.core.Camera3D;
+	import alternativa.engine3d.core.Object3D;
+	import alternativa.engine3d.core.View;
 	import flash.display.Shape;
 	import flash.display.Sprite;
+	import flash.display.Stage3D;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
@@ -35,24 +39,46 @@ package {
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
 	import flash.utils.ByteArray;
+	import flash.utils.Dictionary;
 	public class Main extends Sprite {
+		private var camera:Camera3D;
+		private var stage3d:Stage3D;
+		private var scene:Object3D;
 		public function Main() {
+			camera = new Camera3D(0.1, 1000000);
+			camera.view = new View(800, 600, false, 0xFF00FF, 0, 4);
+			//camera.view.hideLogo();
+			addChild(camera.view);
+			scene = new Object3D();
+			scene.addChild(camera);
+			stage3d = stage.stage3Ds[0];
+			stage3d.addEventListener(Event.CONTEXT3D_CREATE, init);
+			stage3d.requestContext3D();
+		}
+		public function init():void {
+			stage3d.removeEventListener(Event.CONTEXT3D_CREATE, init);
 			progressBar = new ProgressBar(0, 0, 320, 40);
 			this.addEventListener(ProgressEvent.PROGRESS, function(e:ProgressEvent):void {
 				progressBar.update(progress / itemsLoading);
+				if (progress / itemsLoading == 1) {
+					var map:XML = configuration.map.(@name == curMap).children();
+					ExternalInterface.call('alert', map.toString());
+				}
 			});
 			/*var rectangle:Sprite = new Sprite();
 			rectangle.graphics.beginFill(0xFF0000);
 			rectangle.graphics.drawRect(0, 0, 100,100);
 			rectangle.graphics.endFill();
 			addChild(rectangle);*/
-			loadTARA('../../library/CityBuildings.tara');
-			//loadMap('');
+			//loadTARA('../../library/CityBuildings.tara');
+			loadMap('');
 		}
 		private var itemsLoading:int;
 		private var progress:Number;
 		private var progressBar:ProgressBar;
-		private var configuration = <configuration/>;
+		private var curMap:String;
+		private var configuration:XML = <configuration/>;
+		private var proplib:Dictionary = new Dictionary();//old lib setup
 		public function loadTARA(file:String):void {
 			var loader:URLLoader = new URLLoader();
 			loader.dataFormat = URLLoaderDataFormat.BINARY;
@@ -75,7 +101,17 @@ package {
 					files[i] = file;
 				}
 				var library:XML = new XML(files[fileNames.indexOf('library.xml')]);
-				ExternalInterface.call('alert', library.toString());
+				var libName:String = library.@name.toString();
+				proplib[libName] = new Dictionary();
+				for each(var propgroup:XML in library.children()) {
+					var propGroupName:String = propgroup.@name.toString();
+					proplib[libName][propGroupName] = new Dictionary();
+					for each(var prop:XML in propgroup.children()) {
+						var propName:String = prop.@name.toString();
+						proplib[libName][propGroupName][propName] = new Array(0, new Dictionary());
+						
+					}
+				}
 				//when fully parsed, add 0.5 to progress
 				progress += 0.5;
 				this.dispatchEvent(new ProgressEvent(ProgressEvent.PROGRESS));
@@ -95,9 +131,25 @@ package {
 			loader.load(new URLRequest(file));
 		}
 		public function loadMap(map:String, oldConfiguration:Boolean = true):void {
-			//auto-loads map.xml and config.xml in ../../
+			//auto-loads map.xml and config.xml in ../
 			if (oldConfiguration) {
-				
+				itemsLoading+=2;
+				var configLoader:URLLoader = new URLLoader();
+				var mapLoader:URLLoader = new URLLoader();
+				configLoader.addEventListener(Event.COMPLETE, function(e:Event):void {
+					configuration.appendChild(new XML(e.target.data));
+					for each(var proplib:XML in configuration.config.proplibs.children()) {
+						loadTARA('../'+proplib.@url.toString());
+					}
+					//load turrets, hulls, and animations
+					progress++;
+				});
+				mapLoader.addEventListener(Event.COMPLETE, function(e:Event):void {
+					configuration.appendChild(new XML(e.target.data));
+					progress++;
+				});
+				configLoader.load(new URLRequest('../config.xml'));
+				mapLoader.load(new URLRequest('../map.xml'));
 			} else {
 				//parse the new library format
 			}
