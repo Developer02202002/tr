@@ -47,12 +47,14 @@ package {
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
+	import flash.events.TimerEvent;
 	import flash.external.ExternalInterface;
 	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
+	import flash.utils.Timer;
 	public class Main extends Sprite {
 		private var camera:Camera3D;
 		private var stage3d:Stage3D;
@@ -84,9 +86,8 @@ package {
 			this.addEventListener(ProgressEvent.PROGRESS, function(e:ProgressEvent):void {
 				progressBar.update(progress / itemsLoading);
 				if (progress == itemsLoading) {
-					uploadResources();
 					var map:XML = configuration.map.(@name == curMap).children();
-					ExternalInterface.call('alert', map.toString());
+					ExternalInterface.call('alert', 'hey');
 				}
 			});
 			/*var rectangle:Sprite = new Sprite();
@@ -112,8 +113,8 @@ package {
 				res.upload(stage3d.context3D);
 			}
 		}
-		private var itemsLoading:int;
-		private var progress:Number;
+		private var itemsLoading:int=0;
+		private var progress:int=0;
 		private var progressBar:ProgressBar;
 		private var curMap:String;
 		private var configuration:XML = <configuration/>;//old libs
@@ -132,6 +133,7 @@ package {
 			loader.loadBytes(data);
 		}
 		public function initProp(libName:String, propGroupName:String, propName:String, fileName:String, data:ByteArray, defTex:Boolean):void {
+			itemsLoading++;
 			var parser:Parser3DS = new Parser3DS();
 			parser.parse(data);
 			var mesh:Mesh;
@@ -142,9 +144,10 @@ package {
 				}
 			}
 			proplib[libName][propGroupName][propName][0] = mesh;
-			if (defTex) {
-				
+			if (defTex) {//find texture name from mesh, then load it
+				proplib[libName][propGroupName][propName][1]['default'] = new FillMaterial(0x00FF00);
 			}
+			progress++;
 		}
 		public function loadTARA(file:String):void {
 			var loader:URLLoader = new URLLoader();
@@ -156,18 +159,19 @@ package {
 				
 				var tara:ByteArray = e.target.data;
 				var numFiles:int = tara.readInt();
-				var fileNames:Array = new Array();
-				var files:Array = new Array();
+				var a:Array = new Array();
+				var b:Array = new Array();
+				var files:Dictionary = new Dictionary();
 				for (var i:int = 0; i < numFiles; i++) {
-					fileNames.push(tara.readMultiByte(tara.readUnsignedShort(), 'us-ascii'));
-					files.push(tara.readUnsignedInt());
+					a.push(tara.readMultiByte(tara.readUnsignedShort(), 'us-ascii'));
+					b.push(tara.readUnsignedInt());
 				}
-				for (i = 0; i < numFiles; i++) {
+				for (i = 0; i < numFiles; i++ ) {
 					var file:ByteArray = new ByteArray();
-					tara.readBytes(file, 0, files[i]);
-					files[i] = file;
+					tara.readBytes(file, 0, b[i]);
+					files[a[i]] = file;
 				}
-				var library:XML = new XML(files[fileNames.indexOf('library.xml')]);
+				var library:XML = new XML(files['library.xml']);
 				var libName:String = library.@name.toString();
 				proplib[libName] = new Dictionary();
 				for each(var propgroup:XML in library.children()) {
@@ -191,23 +195,24 @@ package {
 					}
 				}
 				progress += 0.5;
-				this.dispatchEvent(new ProgressEvent(ProgressEvent.PROGRESS));
+				dispatchEvent(new ProgressEvent(ProgressEvent.PROGRESS));
 			});
 			loader.addEventListener(ProgressEvent.PROGRESS, function(e:ProgressEvent):void {
 				progress -= localProgress;
 				localProgress = e.bytesLoaded / e.bytesTotal / 2;
 				progress += localProgress;
-				this.dispatchEvent(new ProgressEvent(ProgressEvent.PROGRESS));
+				dispatchEvent(new ProgressEvent(ProgressEvent.PROGRESS));
 			});
 			loader.addEventListener(IOErrorEvent.IO_ERROR, function(e:IOErrorEvent):void {
 				progress -= localProgress;
-				this.dispatchEvent(new ProgressEvent(ProgressEvent.PROGRESS));
+				dispatchEvent(new ProgressEvent(ProgressEvent.PROGRESS));
 				//report/fix error
 			});
 			itemsLoading++;
 			loader.load(new URLRequest(file));
 		}
 		public function loadMap(map:String, oldConfiguration:Boolean = true):void {
+			curMap = map;
 			//auto-loads map.xml and config.xml in ../
 			if (oldConfiguration) {
 				itemsLoading+=2;
@@ -222,7 +227,42 @@ package {
 					progress++;
 				});
 				mapLoader.addEventListener(Event.COMPLETE, function(e:Event):void {
-					configuration.appendChild(new XML(e.target.data));
+					var map:XML = new XML(e.target.data);
+					map.@name = curMap;
+					configuration.appendChild(map);
+					var timer:Timer = new Timer(2000);
+					timer.addEventListener(TimerEvent.TIMER, function(e:TimerEvent):void {
+						timer.stop();
+						for each(var propXML:XML in configuration.map.(@name == curMap)['static-geometry'].prop) {
+							var prop:Array = proplib[propXML['@library-name'].toString()][propXML['@group-name'].toString()][propXML.@name.toString()];
+							if(prop.length>0) {if(prop[0]) {
+								var x:Number = propXML.position.x;
+								var y:Number = propXML.position.y;
+								var z:Number = propXML.position.z;
+								var rx:Number = 0;
+								var ry:Number = 0;
+								var rz:Number = 0;
+								if (propXML.rotation.x.length()) rx = propXML.rotation.x;
+								if (propXML.rotation.y.length()) ry = propXML.rotation.y;
+								if (propXML.rotation.z.length()) rz = propXML.rotation.z;
+								var mesh:Mesh = prop[0].clone();
+								mesh.x = x;
+								mesh.y = y;
+								mesh.z = z;
+								mesh.rotationX = rx;
+								mesh.rotationY = ry;
+								mesh.rotationZ = rz;
+								if (propXML['texture-name'].length()) {
+									mesh.setMaterialToAllSurfaces(prop[1][propXML['texture-name']]);
+								} else {
+									mesh.setMaterialToAllSurfaces(prop[1]['default']);
+								}
+								scene.addChild(mesh);
+							}}
+						}
+						uploadResources();
+					});
+					timer.start();
 					progress++;
 				});
 				configLoader.load(new URLRequest('../config.xml'));

@@ -1,33 +1,19 @@
-﻿<config>
-<map url="Maps/Moon_Silence.xml" />
-<map url="Maps/MainMap1.xml" />
-<map url="Maps/industrial_zone.xml"/>
-<map url="Maps/novel.xml"/>
+<config gravity="-1000" mass="1876" power="1222000" speed="1100">
   <proplibs>
-    <proplib url="library/ConcreteTiles.tara" archive="true" />
-    <proplib url="library/Roadblock.tara" archive="true" />
-    <proplib url="library/Fort.tara" archive="true" />
-    <proplib url="library/GrassTiles.tara" archive="true" />
-    <proplib url="library/Bush.tara" archive="true" />
-    <proplib url="library/SlopesRises.tara" archive="true" />
-    <proplib url="library/ConcreteWalls.tara" archive="true" />
-    <proplib url="library/NuBu5.tara" archive="true" />
-    <proplib url="library/FachwerkHouse1.tara" archive="true" />
-    <proplib url="library/NuBu1.tara" archive="true" />
-    <proplib url="library/NuBu6.tara" archive="true" />
+    <proplib url="library/LandTiles.tara" archive="true" />
+    <proplib url="library/LandRocks.tara" archive="true" />
+    <proplib url="library/WaffleFence.tara" archive="true" />
     <proplib url="library/Promotion.tara" archive="true" />
-    <proplib url="library/NuBu9.tara" archive="true" />
-    <proplib url="library/FachwerkHouse2.tara" archive="true" />
-    <proplib url="library/NuBu2.tara" archive="true" />
-    <proplib url="library/NuBu14.tara" archive="true" />
-    <proplib url="library/NuBu3.tara" archive="true" />
-<proplib url="library/LandRise.tara" />
+    <proplib url="library/Bush.tara" archive="true" />
   </proplibs>
+  <map url="map.xml" />
+  <!--	<map url="map_industrial_zone.xml"/> -->
+  <!--	<map url="map_novel.xml"/>-->
   <options>
     <tank-explosion>
-      <fps>20</fps>
+      <fps>40</fps>
       <offset>100</offset>
-      <frame-width>300</frame-width>
+      <frame-width>800</frame-width>
       <settings>
         <maxEmitters>5</maxEmitters>
         <coneAngle>60</coneAngle>
@@ -47,10 +33,11 @@
     <animation frameSize="500" animationId="Смоки" />
     <animation frameSize="750" animationId="Гром" />
     <animation frameSize="500" animationId="Шафт" />
+    <animation frameSize="200" animationId="Молот" />
   </smoky>
   <flamethrower>
     <animation frameSize="128" animationId="Огнемет" />
-    <animation frameSize="150" animationId="Фриз" />
+    <animation frameSize="500" animationId="Фриз" />
   </flamethrower>
   <!--<railgun>
     <animation frameSize="128" animationId="railgun/beam" />
@@ -65,47 +52,22 @@
     <texture id="skybox_4" url="skybox1/04.jpg" />
     <texture id="skybox_5" url="skybox1/05.jpg" />
     <texture id="skybox_6" url="skybox1/06.jpg" />
-    <texture id="red_square" url="red_square.gif" />
-    <texture id="green_square" url="green_square.gif" />
-    <texture id="teal_triangle" url="teal_triangle.gif" />
     <texture id="active_spawn_marker" url="green_triangle.gif" />
-    <texture id="dm_spawn_marker" url="yellow_marker.gif" />
-    <texture id="red_spawn_marker" url="red_marker.gif" />
-    <texture id="blue_spawn_marker" url="blue_marker.gif" />
-    <texture id="blue_flag" url="blue_flag-2.gif" />
-    <texture id="red_flag" url="red_flag.gif" />
     <texture id="smoky_muzzle_flash" url="smoky/smoky_shot.png" />
     <texture id="Смоки" url="smoky/smoky_explosion1.png" />
     <texture id="flamethrower/Огнемет" url="flamethrower/fireball1_square.png" />
     <texture id="flamethrower/Фриз" url="flamethrower/freeze-fireball.png" />
     <texture id="Гром" url="smoky/thunder_explosion1.png" />
     <texture id="Шафт" url="smoky/shaft_explosion.png" />
-    <!--<texture id="banner1" url="banner1.jpg" />
-    <texture id="banner2" url="banner2.jpg" />
-    <texture id="banner3" url="banner3.jpg" />
-    <texture id="banner4" url="banner4.jpg" />
-    <texture id="railgun/beam" url="railgun/beam.png" />
-	<texture id="railgun/part1" url="railgun/charge_part1.png" />
-	<texture id="railgun/part2" url="railgun/charge_part2.png" />
-	<texture id="railgun/part3" url="railgun/charge_part3.png" />
-	<texture id="railgun/pow" url="railgun/pow.png" />
-    <texture id="billboard" url="billboard.jpg" />-->
+    <texture id="Молот" url="smoky/hummer_explosion.png" />
     <texture id="plasma/muzzle_flash" url="plasma/muzzle_flash.png" />
     <texture id="plasma/shot" url="plasma/shot.png" />
     <texture id="plasma/fade" url="plasma/fade.png" />
     <texture id="plasma/explosion" url="plasma/explosion.png" />
     <texture id="flame_stream" url="flamethrower/FireBirdZ1.png" />
     <texture id="tank_explosion/shockwave" url="tank_explosion/shock_wave.png" />
-    <texture id="tank_explosion/explosion" url="tank_explosion/explosion.png" />
+    <texture id="tank_explosion/explosion" url="tank_explosion/explosion_small.png" />
     <texture id="tank_explosion/smoke" url="tank_explosion/smoke.png" />
-    <!--
-		<texture id="skybox1_up" url="skybox1/up.jpg"/>
-		<texture id="skybox1_down" url="skybox1/down.jpg"/>
-		<texture id="skybox1_left" url="skybox1/left.jpg"/>
-		<texture id="skybox1_right" url="skybox1/right.jpg"/>
-		<texture id="skybox1_front" url="skybox1/front.jpg"/>
-		<texture id="skybox1_back" url="skybox1/back.jpg"/>
-	-->
   </textures>
   <textureAnimations>
     <!--<animation id="railgun_pow">
@@ -128,6 +90,13 @@
       <frameHeight>200</frameHeight>
       <numFrames>17</numFrames>
       <fps>30</fps>
+    </animation>
+    <animation id="Молот">
+      <textureId>Молот</textureId>
+      <frameWidth>90</frameWidth>
+      <frameHeight>90</frameHeight>
+      <numFrames>9</numFrames>
+      <fps>2</fps>
     </animation>
     <!--<animation id="railgun/beam">
       <textureId>railgun/beam</textureId>
@@ -183,28 +152,28 @@
       <frameWidth>150</frameWidth>
       <frameHeight>150</frameHeight>
       <numFrames>13</numFrames>
-      <fps>30</fps>
+      <fps>60</fps>
     </animation>
     <animation id="tank_explosion/shockwave">
       <textureId>tank_explosion/shockwave</textureId>
-      <frameWidth>128</frameWidth>
-      <frameHeight>128</frameHeight>
+      <frameWidth>250</frameWidth>
+      <frameHeight>250</frameHeight>
       <numFrames>16</numFrames>
-      <fps>25</fps>
+      <fps>40</fps>
     </animation>
     <animation id="tank_explosion/explosion">
       <textureId>tank_explosion/explosion</textureId>
-      <frameWidth>256</frameWidth>
-      <frameHeight>256</frameHeight>
+      <frameWidth>128</frameWidth>
+      <frameHeight>128</frameHeight>
       <numFrames>36</numFrames>
-      <fps>25</fps>
+      <fps>40</fps>
     </animation>
     <animation id="tank_explosion/smoke">
       <textureId>tank_explosion/smoke</textureId>
-      <frameWidth>128</frameWidth>
-      <frameHeight>128</frameHeight>
-      <numFrames>16</numFrames>
-      <fps>25</fps>
+      <frameWidth>200</frameWidth>
+      <frameHeight>200</frameHeight>
+      <numFrames>20</numFrames>
+      <fps>40</fps>
     </animation>
     <animation id="plasma/shot">
       <textureId>plasma/shot</textureId>
@@ -222,8 +191,23 @@
     </animation>
   </textureAnimations>
   <hulls path="data/hullsTTT">
-    <hull id="Hornet M0" path="hornet/m0">
-      <model file="hornet.3ds" lightmap="hornet_m0.jpg" details="hornet_m0.png" />
+    <hull id="Hornet XT M0" path="hornetXT/m0">
+      <model file="hornet.3ds" lightmap="lightmap.jpg" details="details.png" />
+    </hull>
+    <hull id="Hornet XT M1" path="hornetXT/m1">
+      <model file="hornet.3ds" lightmap="lightmap.jpg" details="details.png" />
+    </hull>
+    <hull id="Hornet XT M2" path="hornetXT/m2">
+      <model file="hornet.3ds" lightmap="lightmap.jpg" details="details.png" />
+    </hull>
+    <hull id="Hornet XT M3" path="hornetXT/m3">
+      <model file="hornet.3ds" lightmap="lightmap.jpg" details="details.png" />
+    </hull>
+    <hull id="Wasp XT M3" path="waspXT/m3">
+      <model file="wasp_m0.3ds" lightmap="waspXT.jpg" details="waspXT.png" />
+    </hull>
+    <hull id="Viking XT M3" path="vikingXT/m3">
+      <model file="viking.3ds" lightmap="vikingXT.jpg" details="vikingXT.png" />
     </hull>
     <hull id="Wasp M0" path="wasp/m0">
       <model file="wasp_m0.3ds" lightmap="wasp_m0.jpg" details="wasp_m0.png" />
@@ -237,6 +221,9 @@
     <hull id="Wasp M3" path="wasp/m3">
       <model file="wasp_m0.3ds" lightmap="wasp_m3.jpg" details="wasp_m3.png" />
     </hull>
+    <!--<hull id="Wasp XT" path="wasp/m3">
+      <model file="wasp_m0.3ds" lightmap="waspXT.jpg" details="01.png" />
+    </hull>!-->
     <hull id="Hunter M0" path="hunter/m0">
       <model file="hunter.3ds" lightmap="hunter_m0.jpg" details="hunter_m0.png" />
     </hull>
@@ -272,6 +259,9 @@
     </hull>
     <hull id="Dictator M3" path="dictator/m3">
       <model file="dictator_m3.3ds" lightmap="dictator_m3.jpg" details="dictator_m3.png" />
+    </hull>
+    <hull id="Hornet M0" path="hornet/m0">
+      <model file="hornet.3ds" lightmap="hornet_m0.jpg" details="hornet_m0.png" />
     </hull>
     <hull id="Hornet M1" path="hornet/m1">
       <model file="hornet.3ds" lightmap="hornet_m1.jpg" details="hornet_m1.png" />
@@ -320,6 +310,9 @@
     <turret id="Smoky M3" path="smoky/m3">
       <model file="smoky_m23.3ds" lightmap="smoky_m3.jpg" details="smoky_m3.png" />
     </turret>
+    <!-- <turret id="Smoky XT" path="smoky/xt">
+      <model file="01.3ds" lightmap="01.jpg" details="01.png" />
+    </turret>!-->
     <turret id="FireBird M0" path="firebird/m0">
       <model file="firebird_m012.3ds" lightmap="fireBird_m0.jpg" details="fireBird_m0.png" />
     </turret>
@@ -416,98 +409,185 @@
     <turret id="Shaft M3" path="shaft/m3">
       <model file="shaft.3ds" lightmap="shaft_m3.jpg" details="shaft_m3.png" />
     </turret>
+    <turret id="Railgun XT M0" path="railgunXT/m0">
+      <model file="railgun.3ds" lightmap="lightmap.jpg" details="details.png" />
+    </turret>
+    <turret id="Railgun XT M1" path="railgunXT/m1">
+      <model file="railgun.3ds" lightmap="lightmap.jpg" details="details.png" />
+    </turret>
+    <turret id="Railgun XT M2" path="railgunXT/m2">
+      <model file="railgun.3ds" lightmap="lightmap.jpg" details="details.png" />
+    </turret>
+    <turret id="Railgun XT M3" path="railgunXT/m3">
+      <model file="railgun.3ds" lightmap="lightmap.jpg" details="details.png" />
+    </turret>
+    <turret id="Hammer M0" path="hammer/m0">
+      <model file="hammer.3ds" lightmap="lightmap.jpg" details="details.png" />
+    </turret>
+    <turret id="Hammer M1" path="hammer/m1">
+      <model file="hammer.3ds" lightmap="lightmap.jpg" details="details.png" />
+    </turret>
+    <turret id="Hammer M2" path="hammer/m2">
+      <model file="hammer.3ds" lightmap="lightmap.jpg" details="details.png" />
+    </turret>
+    <turret id="Hammer M3" path="hammer/m3">
+      <model file="hammer.3ds" lightmap="lightmap.jpg" details="details.png" />
+    </turret>
+    <turret id="Volcano M0" path="vulcan/m0">
+      <model file="vulcan.3ds" lightmap="lightmap.jpg" details="details.png" />
+    </turret>
+    <turret id="Volcano M1" path="vulcan/m1">
+      <model file="vulcan.3ds" lightmap="lightmap.jpg" details="details.png" />
+    </turret>
+    <turret id="Volcano M2" path="vulcan/m2">
+      <model file="vulcan.3ds" lightmap="lightmap.jpg" details="details.png" />
+    </turret>
+    <turret id="Volcano M3" path="vulcan/m3">
+      <model file="vulcan.3ds" lightmap="lightmap.jpg" details="details.png" />
+    </turret>
+    <turret id="FireBird XT" path="firebirdXT/m3">
+      <model file="firebird_m3.3ds" lightmap="firebirdXT.jpg" details="firebirdXT.png" />
+    </turret>
+    <turret id="Thunder XT" path="thunderXT/m3">
+      <model file="thunder_m0123.3ds" lightmap="thunderXT.jpg" details="thunderXT.png" />
+    </turret>
   </turrets>
   <colormaps path="data/colormaps">
-    <colormap id="1" file="colormap_1.jpg" />
-    <colormap id="2" file="colormap_01.jpg" />
-    <colormap id="3" file="colormap_2.jpg" />
-    <colormap id="4" file="colormap_02.jpg" />
-    <colormap id="5" file="colormap_3.jpg" />
-    <colormap id="6" file="colormap_03.jpg" />
-    <colormap id="7" file="colormap_4.jpg" />
-    <colormap id="8" file="colormap_04.jpg" />
-    <colormap id="9" file="colormap_5.jpg" />
-    <colormap id="10" file="colormap_05.jpg" />
-    <colormap id="11" file="colormap_6.jpg" />
-    <colormap id="12" file="colormap_06.jpg" />
-    <colormap id="13" file="colormap_49.jpg" />
-    <colormap id="14" file="colormap_11.jpg" />
-    <colormap id="15" file="colormap_24.jpg" />
-    <colormap id="16" file="colormap_43.jpg" />
-    <colormap id="17" file="colormap56.jpg" />
-    <colormap id="18" file="colormap1.jpg" />
-    <colormap id="20" file="colormap2.jpg" />
-    <colormap id="21" file="colormap3.jpg" />
-    <colormap id="22" file="colormap4.jpg" />
-    <colormap id="23" file="colormap5.jpg" />
-    <colormap id="24" file="colormap6.jpg" />
-    <colormap id="25" file="colormap7.jpg" />
-    <colormap id="26" file="colormap8.jpg" />
-    <colormap id="27" file="colormap9.jpg" />
-    <colormap id="28" file="colormap10.jpg" />
-    <colormap id="29" file="colormap11.jpg" />
-    <colormap id="30" file="colormap12.jpg" />
-    <colormap id="31" file="colormap13.jpg" />
-    <colormap id="32" file="colormap14.jpg" />
-    <colormap id="33" file="colormap15.jpg" />
-    <colormap id="34" file="colormap16.jpg" />
-    <colormap id="35" file="colormap17.jpg" />
-    <colormap id="36" file="colormap18.jpg" />
-    <colormap id="37" file="colormap19.jpg" />
-    <colormap id="38" file="colormap20.jpg" />
-    <colormap id="39" file="colormap21.jpg" />
-    <colormap id="40" file="colormap22.jpg" />
-    <colormap id="19" file="colormap23.jpg" />
-    <colormap id="41" file="colormap24.jpg" />
-    <colormap id="42" file="colormap25.jpg" />
-    <colormap id="43" file="colormap26.jpg" />
-    <colormap id="44" file="colormap27.jpg" />
-    <colormap id="45" file="colormap28.jpg" />
-    <colormap id="46" file="colormap29.jpg" />
-    <colormap id="47" file="colormap30.jpg" />
-    <colormap id="48" file="colormap31.jpg" />
-    <colormap id="49" file="colormap32.jpg" />
-    <colormap id="50" file="colormap33.jpg" />
-    <colormap id="51" file="colormap34.jpg" />
-    <colormap id="52" file="colormap35.jpg" />
-    <colormap id="53" file="colormap36.jpg" />
-    <colormap id="54" file="colormap37.jpg" />
-    <colormap id="55" file="colormap38.jpg" />
-    <colormap id="56" file="colormap39.jpg" />
-    <colormap id="57" file="colormap40.jpg" />
-    <colormap id="58" file="colormap41.jpg" />
-    <colormap id="59" file="colormap42.jpg" />
-    <colormap id="60" file="colormap43.jpg" />
-    <colormap id="61" file="colormap44.jpg" />
-    <colormap id="62" file="colormap45.jpg" />
-    <colormap id="63" file="colormap46.jpg" />
-    <colormap id="64" file="colormap47.jpg" />
-    <colormap id="65" file="colormap48.jpg" />
-    <colormap id="66" file="colormap49.jpg" />
-    <colormap id="67" file="colormap50.jpg" />
-    <colormap id="68" file="colormap51.jpg" />
-    <colormap id="69" file="colormap52.jpg" />
-    <colormap id="70" file="colormap53.jpg" />
-    <colormap id="71" file="colormap54.jpg" />
-    <colormap id="72" file="colormap55.jpg" />
-    <colormap id="73" file="colormap57.jpg" />
-    <colormap id="74" file="colormap58.jpg" />
-    <colormap id="75" file="colormap59.jpg" />
-    <colormap id="76" file="colormap60.jpg" />
-    <colormap id="77" file="colormap61.jpg" />
-    <colormap id="78" file="colormap62.jpg" />
-    <colormap id="79" file="colormap63.jpg" />
-    <colormap id="80" file="colormap64.jpg" />
-    <colormap id="81" file="colormap65.jpg" />
-    <colormap id="82" file="colormap66.jpg" />
-    <colormap id="83" file="colormap67.jpg" />
-    <colormap id="84" file="colormap68.jpg" />
-    <colormap id="85" file="colormap69.jpg" />
-    <colormap id="86" file="colormap70.jpg" />
-    <colormap id="87" file="colormap71.jpg" />
-    <colormap id="88" file="colormap72.jpg" />
-    <colormap id="89" file="colormap73.jpg" />
-    <colormap id="90" file="colormap74.jpg" />
-    <colormap id="91" file="colormap75.jpg" />
+    <colormap id="1" file="Green.jpg" />
+    <colormap id="2" file="Red.jpg" />
+    <colormap id="3" file="Blue.jpg" />
+    <colormap id="4" file="Black.jpg" />
+    <colormap id="5" file="White.jpg" />
+    <colormap id="6" file="Orange.jpg" />
+    <colormap id="7" file="Flora.jpg" />
+    <colormap id="8" file="Marine.jpg" />
+    <colormap id="9" file="Swamp.jpg" />
+    <colormap id="10" file="Forester.jpg" />
+    <colormap id="11" file="Metallic.jpg" />
+    <colormap id="12" file="Lava.jpg" />
+    <colormap id="13" file="Lead.jpg" />
+    <colormap id="14" file="Safari.jpg" />
+    <colormap id="15" file="Dragon.jpg" />
+    <colormap id="16" file="Mary.jpg" />
+    <colormap id="17" file="Storm.jpg" />
+    <colormap id="18" file="Carbon.jpg" />
+    <colormap id="19" file="In-Love.jpg" />
+    <colormap id="20" file="Alien.jpg" />
+    <colormap id="21" file="Dirty.jpg" />
+    <colormap id="22" file="Swash.jpg" />
+    <colormap id="23" file="Jaguar.jpg" />
+    <colormap id="24" file="Desert.jpg" />
+    <colormap id="25" file="Corrosion.jpg" />
+    <colormap id="26" file="Tundra.jpg" />
+    <colormap id="27" file="Roger.jpg" />
+    <colormap id="28" file="Cedar.jpg" />
+    <colormap id="29" file="Python.jpg" />
+    <colormap id="30" file="Electra.jpg" />
+    <colormap id="31" file="Sandstone.jpg" />
+    <colormap id="32" file="Spark.jpg" />
+    <colormap id="33" file="Digital.jpg" />
+    <colormap id="34" file="Rustle.jpg" />
+    <colormap id="35" file="Hohloma.jpg" />
+    <colormap id="36" file="Loam.jpg" />
+    <colormap id="37" file="Winter.jpg" />
+    <colormap id="38" file="Urban.jpg" />
+    <colormap id="39" file="Savanna.jpg" />
+    <colormap id="40" file="Irbis.jpg" />
+    <colormap id="41" file="Emerald.jpg" />
+    <colormap id="42" file="Inferno.jpg" />
+    <colormap id="43" file="Jade.jpg" />
+    <colormap id="44" file="Taiga.jpg" />
+    <colormap id="45" file="Prodigi.jpg" />
+    <colormap id="46" file="Rock.jpg" />
+    <colormap id="47" file="Needle.jpg" />
+    <colormap id="48" file="Picasso.jpg" />
+    <colormap id="49" file="Zeus.jpg" />
+    <colormap id="50" file="Clay.jpg" />
+    <colormap id="51" file="Tiger.jpg" />
+    <colormap id="52" file="Nano.jpg" />
+    <colormap id="53" file="Magma.jpg" />
+    <colormap id="54" file="Atom.jpg" />
+    <colormap id="55" file="Pixel.jpg" />
+    <colormap id="56" file="Mars.jpg" />
+    <colormap id="57" file="Chainmail.jpg" />
+    <colormap id="58" file="Africa.jpg" />
+    <colormap id="59" file="Vortex.jpg" />
+    <colormap id="60" file="Sakura.jpg" />
+    <colormap id="61" file="Rhino.jpg" />
+    <colormap id="62" file="Raccoon.jpg" />
+    <colormap id="63" file="Lumberjack.jpg" />
+    <colormap id="64" file="Invader.jpg" />
+    <colormap id="65" file="Hive.jpg" />
+    <colormap id="66" file="Guerrilla.jpg" />
+    <colormap id="67" file="Graffiti.jpg" />
+    <colormap id="68" file="Fracture.jpg" />
+    <colormap id="69" file="Cherry.jpg" />
+    <colormap id="70" file="Blacksmith.jpg" />
+    <colormap id="71" file="Tracer.jpg" />
+    <colormap id="72" file="Moonwalker.jpg" />
+    <colormap id="Dead" file="special\Dead.jpg" />
+    <colormap id="73" file="special\Lord.jpg" />
+    <colormap id="74" file="special\Newspaper.jpg" />
+    <colormap id="75" file="special\Champion.jpg" />
+    <colormap id="76" file="special\Acid.jpg" />
+    <colormap id="77" file="special\Alligator.jpg" />
+    <colormap id="78" file="special\Microchip.jpg" />
+    <colormap id="79" file="special\Engineer.jpg" />
+    <colormap id="80" file="special\Flame.jpg" />
+    <colormap id="81" file="special\Star.jpg" />
+    <colormap id="82" file="special\1000AstronautsDevelopment.jpg" />
+    <colormap id="83" file="special\1000AstronautsPlayer.jpg" />
+    <colormap id="84" file="special\Storm.jpg" />
+    <colormap id="85" file="special\Silver.jpg" />
+    <colormap id="86" file="special\Bronze.jpg" />
+    <colormap id="87" file="special\Gladiator.jpg" />
+    <colormap id="88" file="special\Veteran.jpg" />
+    <colormap id="89" file="special\Lucky7.jpg" />
+    <colormap id="90" file="special\Glide.jpg" />
+    <colormap id="91" file="special\Helios.jpg" />
+    <colormap id="92" file="special\Aramid.jpg" />
+    <colormap id="93" file="special\Ruby.jpg" />
+    <colormap id="94" file="special\Devil.jpg" />
+    <colormap id="95" file="special\Helper.jpg" />
+    <colormap id="96" file="special\Operator.jpg" />
+    <colormap id="97" file="special\Devil_new.jpg" />
+    <colormap id="98" file="special\Aero.jpg" />
+    <colormap id="99" file="special\MasterOfParkour_14.jpg" />
+    <colormap id="100" file="special\MasterOfParkour_15.jpg" />
+    <colormap id="101" file="special\Spectator.jpg" />
+    <colormap id="102" file="special\Premium.jpg" />
+    <colormap id="103" file="special\Frost.jpg" />
+    <colormap id="104" file="holiday\Absent.jpg" />
+    <colormap id="105" file="holiday\12_TankistsDay.jpg" />
+    <colormap id="106" file="holiday\12_Halloween.jpg" />
+    <colormap id="107" file="holiday\13_NewYear.jpg" />
+    <colormap id="108" file="holiday\13_ValentinesDay.jpg" />
+    <colormap id="109" file="holiday\13_DefenderoftheFatherlandDay.jpg" />
+    <colormap id="110" file="holiday\13_WomensDay.jpg" />
+    <colormap id="111" file="holiday\13_InternationalWorkersDay.jpg" />
+    <colormap id="112" file="holiday\13_VictoryDay.jpg" />
+    <colormap id="113" file="holiday\13_4YearsOfTO.jpg" />
+    <colormap id="114" file="holiday\13_TankistsDay.jpg" />
+    <colormap id="115" file="holiday\13_Halloween.jpg" />
+    <colormap id="116" file="holiday\14_NewYear.jpg" />
+    <colormap id="117" file="holiday\14_ValentinesDay.jpg" />
+    <colormap id="118" file="holiday\14_DefenderoftheFatherlandDay.jpg" />
+    <colormap id="119" file="holiday\14_WomensDay.jpg" />
+    <colormap id="120" file="holiday\14_AprilFoolsDay.jpg" />
+    <colormap id="121" file="holiday\14_CosmonauticsDay.jpg" />
+    <colormap id="122" file="holiday\14_InternationalWorkersDay.jpg" />
+    <colormap id="123" file="holiday\14_VictoryDay.jpg" />
+    <colormap id="124" file="holiday\14_5YearsOfTO.jpg" />
+    <colormap id="125" file="holiday\14_TankistsDay.jpg" />
+    <colormap id="126" file="holiday\14_Halloween.jpg" />
+    <colormap id="127" file="holiday\14_Christmas.jpg" />
+    <colormap id="128" file="holiday\15_6YearsOfTO.jpg" />
+    <colormap id="129" file="holiday\15_DefenderoftheFatherlandDay.jpg" />
+    <colormap id="130" file="holiday\15_InternationalWorkers'Day.jpg" />
+    <colormap id="131" file="holiday\15_TankistsDay.jpg" />
+    <colormap id="132" file="holiday\15_ValentinesDay.jpg" />
+    <colormap id="133" file="holiday\15_WomensDay.jpg" />
+    <colormap id="134" file="01.jpg" />
+    <colormap id="135" file="free-fur-texture1.jpg" />
   </colormaps>
 </config>
