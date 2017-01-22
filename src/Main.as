@@ -137,9 +137,9 @@ package {
 			var parser:Parser3DS = new Parser3DS();
 			parser.parse(data);
 			var mesh:Mesh;
-			for each(var obj:Object3D in parser.objects) {
-				if (obj.name == fileName) {
-					mesh = obj as Mesh;
+			for each(var x:Object3D in parser.objects) {
+				if (x.name == fileName) {
+					mesh = x.getChildAt(0) as Mesh;// ExternalInterface.call('alert', x.getChildAt(0));
 					break;
 				}
 			}
