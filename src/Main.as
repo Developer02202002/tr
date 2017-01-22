@@ -126,7 +126,7 @@ package {
 			loader.contentLoaderInfo.addEventListener(Event.INIT, function(e:Event):void {
 				var bmp:BitmapData = new BitmapData(loader.content.width, loader.content.height);
 				bmp.draw(loader);
-				proplib[libName][propGroupName][propName][1][texName] = new TextureMaterial(new BitmapTextureResource(bmp));
+				proplib[libName][propGroupName][propName][1][texName] = new FillMaterial(Math.random()*0xFFFFFF);//new TextureMaterial(new BitmapTextureResource(bmp));
 				progress++;
 				this.dispatchEvent(new ProgressEvent(ProgressEvent.PROGRESS));
 			});
@@ -145,7 +145,7 @@ package {
 			}
 			proplib[libName][propGroupName][propName][0] = mesh;
 			if (defTex) {//find texture name from mesh, then load it
-				proplib[libName][propGroupName][propName][1]['default'] = new FillMaterial(0x00FF00);
+				proplib[libName][propGroupName][propName][1]['default'] = new FillMaterial(0xFF0000);
 			}
 			progress++;
 		}
@@ -235,7 +235,7 @@ package {
 						timer.stop();
 						for each(var propXML:XML in configuration.map.(@name == curMap)['static-geometry'].prop) {
 							var prop:Array = proplib[propXML['@library-name'].toString()][propXML['@group-name'].toString()][propXML.@name.toString()];
-							if(prop.length>0) {if(prop[0]) {
+							try{if (prop[0] != null) {
 								var x:Number = propXML.position.x;
 								var y:Number = propXML.position.y;
 								var z:Number = propXML.position.z;
@@ -257,8 +257,9 @@ package {
 								} else {
 									mesh.setMaterialToAllSurfaces(prop[1]['default']);
 								}
+								mesh.setMaterialToAllSurfaces(new FillMaterial(Math.random() * 0xFFFFFF));
 								scene.addChild(mesh);
-							}}
+							}} catch(e:Error) {}
 						}
 						uploadResources();
 					});
