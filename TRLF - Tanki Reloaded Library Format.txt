@@ -1,0 +1,41 @@
+Tanki Reloaded Library Format(TRLF)
+
+[TND] Sorry if this is hard to understand, it's a complicated system. This will eventually be rewritten anyways.
+
+There are 2 folders: a source folder with tools and a game folder.
+The source folder contains the uncompiled props in an easily editable format.
+The types of tools include 3D editing software(blender), an image manipulation program(GIMP), a map editor, an asset manager, a library editor, and, of course, some kind of tank testing tool.
+I'm calling items assets rather than props do to all that copyright stuff.
+
+All maps are in a custom binary format and are split into two files: A map file specifying assets and their locations, and another file specifying the assets that need to be loaded in order for the map to load.
+Every prop in the game directory has a simple alphanumeric name. This includes textures.
+
+In the source directory files are in 3ds and (jpg or png?) format. Textures have the same name as the 3ds file. For any asset that can have more than one texture, the asset will have it's own unique folder with all of the textures.
+The source directory will have some sort of mapping file indicating which name coorsponds to which alphanumeric id.
+The library editor/asset manager keeps track of this with the mapping file and is responsible for exporting files to the compiled library, managing which numbers are reserved, and updating references when a file name changes.
+
+The source 3ds contains 2 objects in it: 'object' and 'collision'. Those two objects coorspond to the in-game geometry and the physical collision surface. Materials specified in the 3ds are not used when the file is compilied.
+For all static(non-moving) objects, which is almost the entire asset library, the point of insertion will always be at 0,0,0 for the object, and so it must be aligned with some intuitive point on the object.
+All dynamic(moving) objects must have their center of mass at the origin.
+
+I haven't yet decided on how the ids will be formatted, but it should probably be an int
+The alphanumeric id of files corresponds to a binary integer.
+
+Here's the file formats:
+
+map file:
+list of the following(order of items doesn't matter):
+	id of 3d asset		float of x		float of y		float of z		float of rx		float of ry		float of rz		id of texture
+rx means rotation x. I'm not certain, but I think that single-precision floats would work here.
+
+map dependency file:
+list of files, comma deliminated
+
+mapping file:
+list of files(relative path from root, so it includes / if needed), return(\n) deliminated
+If an entry is blank, you'll see \n\n
+The asset number can be calculated from the offset
+I might just make this format comma-deliminated as well
+
+3d asset file:
+undecided, but will contain both geometries concacted together along a version number at the start. At first we'll just use 3ds.
